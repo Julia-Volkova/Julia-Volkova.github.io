@@ -21,21 +21,20 @@ export default class Carousel extends React.Component {
 		}
 	};
 
-	toggleSlide(type, event) {
-		event.preventDefault();
+	togglePrevSlide = (e) => {
+		e.preventDefault();
 		const {images} = this.props;
 		const { activeSlideId } = this.state;
-		if (type === 'prev') {
-			if (+activeSlideId === 0) {
-				this.setState({ activeSlideId: images.length - 1 });
-			} else {
-				this.setState({ activeSlideId });
-			}
-		} else {
-			if (+activeSlideId === images.length - 1) {
-				this.setState({ activeSlideId: 0 });
-			}
-		}
+		const prevSlideId = ((activeSlideId + (images.length - 1)) % images.length);
+		this.setState({ activeSlideId: prevSlideId });
+	};
+
+	toggleNextSlide = (e) => {
+		e.preventDefault();
+		const {images} = this.props;
+		const { activeSlideId } = this.state;
+		const nextSlideId = ((activeSlideId + 1) % images.length);
+		this.setState({ activeSlideId: nextSlideId });
 	};
 
 	render() {
@@ -44,11 +43,11 @@ export default class Carousel extends React.Component {
 				<div className="carousel-inner">
 					{this.slideList()}
 				</div>
-				<a className="carousel-control-prev" onClick={() => this.toggleSlide('prev')} href="#carousel" role="button" data-slide="prev">
+				<a className="carousel-control-prev" onClick={this.togglePrevSlide} href="#carousel" role="button" data-slide="prev">
 					<span className="carousel-control-prev-icon"></span>
 					<span className="sr-only">Previous</span>
 				</a>
-				<a className="carousel-control-next" onClick={() => this.toggleSlide('next')} href="#carousel" role="button" data-slide="next">
+				<a className="carousel-control-next" onClick={this.toggleNextSlide} href="#carousel" role="button" data-slide="next">
 					<span className="carousel-control-next-icon"></span>
 					<span className="sr-only">Next</span>
 				</a>
